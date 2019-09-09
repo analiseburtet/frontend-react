@@ -1,47 +1,45 @@
-import React, { Component } from 'react'
+import React, { useState , useEffect } from 'react'
 import './App.scss';
+import axios from "axios";
 import Header from "./components/header/header.component";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Posts from "./components/posts/posts.component";
+import Pagination from "./components/pagination/pagination.component";
 
-class App extends Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			items: [],
-			isLoaded: false
+const App = () => {
+	const [ posts, setPosts ] = useState([]);
+	const [ loading, setLoading ] = useState(false);
+	const [ currentPage, setCurrentPage ] = useState(1);
+	const [ postsPerPage ] = useState(9);
+	
+	const API_KEY = process.env.REACT_APP_API_KEY; 
+	
+	useEffect(() => {
+		const fetchPosts = async () => {
+			setLoading(true);
+			const res = await axios.get(`https://gorest.co.in/public-api/posts?access-token=${API_KEY}`);
+			console.log(res);
+			setPosts(res.data.result);
+			setLoading(false);
 		}
-	}
-	componentDidMount(){
-		fetch('https://gorest.co.in/public-api/posts?access-token=XXXXXXXXXXX')
-			.then(res => res.json())
-			.then(json => {
-				this.setState({
-					isLoaded:true,
-					items: json
-				})
-			});
+			
+		fetchPosts();
+	}, []);
+	
+	const indexOfLastPost = currentPage * postsPerPage;
+	const indexOfFirstPost = indexOfLastPost - postsPerPage;
+	const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
-	}
-	render(){
-		const { isLoaded, items } = this.state;
-		if(!isLoaded){
-			return <div className="App"><CircularProgress/></div>
-		}
-		else{	
-			return(
-				<div className="App">
-					<Header/>
-					<ul className="App-list">
-						{items.result.map(item => (
-							<li key={item.id}>
-								{item.title} | {item.user_id}
-							</li>
-						))}
-					</ul>
-				</div>
-			)
-		}
-	}
-}
+	const paginate = pageNumber => setCurrentPage(pageNumber);
+
+	return(
+		<div className="App">
+			<Header/>
+			<div className="main">
+				<Posts posts={currentPosts} loading={loading}/>
+				<Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}/>
+			</div>	
+		</div>
+	);
+};
 
 export default App;

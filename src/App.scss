@@ -9,7 +9,13 @@ body {
     overflow-x: hidden;
 }
 
-.App-list {
+a {
+    color: #2B2B2B;
+    opacity: 1;
+    text-decoration: none;
+}
+
+.main {
     display: flex;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border-radius: 3px;
@@ -18,7 +24,13 @@ body {
     flex-direction: column;
     margin: 0 auto;
     padding: 11px;
+    margin-bottom: 20px;
+}
+
+.App-list {
     list-style: none;
+    padding-left: 0px; 
+    margin: 0;
 
     &>li{
         letter-spacing: 0;
