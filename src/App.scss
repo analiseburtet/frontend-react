@@ -1,0 +1,30 @@
+$border: #F0EFEF;
+
+body {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    background: $border 0% 0% no-repeat padding-box;
+    opacity: 1;
+    overflow-x: hidden;
+}
+
+.App-list {
+    display: flex;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border-radius: 3px;
+    opacity: 1;
+    width: 90%;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 11px;
+    list-style: none;
+
+    &>li{
+        letter-spacing: 0;
+        color: #2B2B2B;
+        opacity: 1;
+        padding: 20px 30px; 
+        border: 1px solid $border;
+    }
+}
